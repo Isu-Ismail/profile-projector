@@ -56,7 +56,7 @@ const SCREW_OD_STEPS = [
   {
     id: 11,
     message:
-      "Step 2: Align Top Crest. Move the stage to align the **top-most crest** with the **horizontal crosshair**. The tutorial will advance when Y-axis reads **+8.500**.",
+      "Step 2: Align Top Crest. Move the stage to align the **bottom-most crest** with the **horizontal crosshair**. The tutorial will advance when Y-axis reads **+8.500**.",
     text: "Use the **Arrow Keys**. Press the **UP Arrow (▲)** key until the screw auto-stops. The DRO should read +8.500.",
     // **FIX: Highlight DRO**
     targetId: "dro-panel",
@@ -72,7 +72,7 @@ const SCREW_OD_STEPS = [
   {
     id: 13,
     message:
-      "Step 4: Align Bottom Crest. Move the stage to align the **bottom-most crest** with the **horizontal crosshair**. The tutorial will advance when Y-axis reads **-20.000**.",
+      "Step 4: Align top Crest. Move the stage to align the **bottom-most crest** with the **horizontal crosshair**. The tutorial will advance when Y-axis reads **-20.000**.",
     text: "Use the **Arrow Keys**. Press the **DOWN Arrow (▼)** key again until the screw auto-stops. The DRO should read -20.000.",
     // **FIX: Highlight DRO**
     targetId: "dro-panel",
