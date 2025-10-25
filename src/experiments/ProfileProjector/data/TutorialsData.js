@@ -1,4 +1,4 @@
-// This file now contains multiple structured tutorial paths.
+const BASE_URL_PREFIX = import.meta.env.BASE_URL;
 
 const GEAR_OD_STEPS = [
   {
@@ -20,7 +20,7 @@ const GEAR_OD_STEPS = [
       "Step 3: First Alignment. Click the up Arrrow in the keyborad to align the **bottom-most tooth edge** with the **blue line**. The tutorial will advance when Y-axis reads **21.500**.",
     text: "Use the **Arrow Keys**. Press the **UP Arrow (▲)** key until the gear auto-stops. The DRO should read 21.500.",
     targetId: "dro-panel", // Highlight DRO during alignment
-    imageUrl: "/assets/tutorials/gear_up.png"
+    imageUrl: BASE_URL_PREFIX + "assets/tutorials/gear_up.png" // FIXED PATH
   },
   {
     id: 4,
@@ -34,7 +34,7 @@ const GEAR_OD_STEPS = [
       "Step 5: Second Alignment.click the down arrow in the keyboard to align the **top-most tooth edge** with the **blue line**. The tutorial will advance when Y-axis reads **-42.500**.",
     text: "Use the **Arrow Keys**. Press the **DOWN Arrow (▼)** key until the gear auto-stops. The DRO should read -42.500.",
     targetId: "dro-panel", // Highlight DRO during alignment
-    imageUrl: "/assets/tutorials/gear_down.png"
+    imageUrl: BASE_URL_PREFIX + "assets/tutorials/gear_down.png" // FIXED PATH
   },
   {
     id: 6,
@@ -60,7 +60,7 @@ const SCREW_OD_STEPS = [
     text: "Use the **Arrow Keys**. Press the **UP Arrow (▲)** key until the screw auto-stops. The DRO should read +8.500.",
     // **FIX: Highlight DRO**
     targetId: "dro-panel",
-    imageUrl: "/assets/tutorials/screw_up.png"
+    imageUrl: BASE_URL_PREFIX + "assets/tutorials/screw_up.png" // FIXED PATH
   },
   {
     id: 12,
@@ -76,7 +76,7 @@ const SCREW_OD_STEPS = [
     text: "Use the **Arrow Keys**. Press the **DOWN Arrow (▼)** key again until the screw auto-stops. The DRO should read -20.000.",
     // **FIX: Highlight DRO**
     targetId: "dro-panel",
-    imageUrl: "/assets/tutorials/screw_down.png"
+    imageUrl: BASE_URL_PREFIX + "assets/tutorials/screw_down.png" // FIXED PATH
   },
   {
     id: 14,
@@ -112,8 +112,8 @@ const ANGLE_MEASURE_STEPS = [
     message: "Step 4: Align for **Point 1**. Use Arrow Keys until the DRO reads **X: 13.000** and **Y: -5.500**.",
     text: "Use Arrow Keys to align the crosshair to Point 1. The DRO will read **X: 13.000** and **Y: -5.500**.",
     targetId: "dro-panel",
-    imageUrl: "/assets/tutorials/point1.png"
-     // Highlight DRO
+    imageUrl: BASE_URL_PREFIX + "assets/tutorials/point1.png" // FIXED PATH
+    // Highlight DRO
   },
   {
     id: 24,
@@ -127,7 +127,7 @@ const ANGLE_MEASURE_STEPS = [
     message: "Step 6: Align for **Point 2**. Use Arrow Keys until the DRO reads **X: 7.000** and **Y: 5.500**.",
     text: "Use Arrow Keys to align the crosshair to Point 2. The DRO will read **X: 7.000** and **Y: 5.500**.",
     targetId: "dro-panel",
-    imageUrl: "/assets/tutorials/point2.png" // Highlight DRO
+    imageUrl: BASE_URL_PREFIX + "assets/tutorials/point2.png" // FIXED PATH
   },
   {
     id: 26,
@@ -142,7 +142,7 @@ const ANGLE_MEASURE_STEPS = [
     message: "Step 8: Align for **Point 3**. Use Arrow Keys until the DRO reads **X: -7.000** and **Y: 5.500**.",
     text: "Use Arrow Keys to align the crosshair to Point 3. The DRO will read **X: -7.000** and **Y: 5.500**.",
     targetId: "dro-panel",
-    imageUrl: "/assets/tutorials/point3.png" // Highlight DRO
+    imageUrl: BASE_URL_PREFIX + "assets/tutorials/point3.png" // FIXED PATH
   },
   {
     id: 28,
@@ -156,7 +156,7 @@ const ANGLE_MEASURE_STEPS = [
     message: "Step 10: Align for **Point 4**. Use Arrow Keys until the DRO reads **X: -13.000** and **Y: -5.500**.",
     text: "Use Arrow Keys to align the crosshair to Point 4. The DRO will read **X: -13.000** and **Y: -5.500**.",
     targetId: "dro-panel", 
-    imageUrl: "/assets/tutorials/point4.png"// Highlight DRO
+    imageUrl: BASE_URL_PREFIX + "assets/tutorials/point4.png"// FIXED PATH
   },
   {
     id: 30,
