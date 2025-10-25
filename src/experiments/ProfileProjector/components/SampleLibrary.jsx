@@ -3,12 +3,16 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchExperimentSamples } from "../../../repositories/lab_repo";
 import styles from "./SampleLibrary.module.css";
 
+// Prefix the base URL for the repository to all static asset paths
+const BASE_URL_PREFIX = import.meta.env.BASE_URL;
+
 const HARDCODED_SAMPLES = {
   "profile-projector": [
     {
       id: "gear",
       name: "Gear",
-      imageUrl: "/assets/samples/gear.png",
+      // FIX: Use BASE_URL_PREFIX
+      imageUrl: BASE_URL_PREFIX + "assets/samples/gear.png",
       diameter: "44.00 mm",
       angle: "20°",
       type: "image",
@@ -16,18 +20,19 @@ const HARDCODED_SAMPLES = {
     {
       id: "screw",
       name: "Threaded Screw",
-      imageUrl: "/assets/samples/screw.png",
+      // FIX: Use BASE_URL_PREFIX
+      imageUrl: BASE_URL_PREFIX + "assets/samples/screw.png",
       screwDiameter: "17.00 mm",
       pitch: "0.8 mm",
       type: "image",
     },
-    // **CHANGED V-Profile Sample**
     {
       id: "v-profile",
       name: "V-Profile",
-      imageUrl: "/assets/samples/thread.png", // <-- 1. Set image path
-      type: "image", // <-- 2. Set type to "image"
-      angle: "60.00°", // Expected angle (for reference)
+      // FIX: Use BASE_URL_PREFIX
+      imageUrl: BASE_URL_PREFIX + "assets/samples/thread.png",
+      type: "image",
+      angle: "60.00°",
     },
   ],
 };
@@ -45,7 +50,7 @@ function SampleLibrary({
   onSampleSelect,
   selectedSampleId,
   highlightTargetId,
-  disabled, // Receive disabled prop
+  disabled,
 }) {
   const experimentId = "profile-projector";
 
@@ -95,20 +100,21 @@ function SampleLibrary({
               selectedSampleId === sample.id ? styles.selected : ""
             }`}
             id={`sample-${sample.id}`}
-            disabled={disabled} // Disable button if needed
+            disabled={disabled}
           >
             {/* **Conditionally render image or placeholder** */}
             {sample.imageUrl ? (
               <div
                 className={styles.sampleProfile}
+                // FIX: The CSS background image uses the corrected sample.imageUrl
                 style={{ backgroundImage: `url(${sample.imageUrl})` }}
               ></div>
             ) : (
-              // Placeholder for CSS samples (No longer used by V-Profile)
+              // Placeholder for CSS samples
               <div
                 className={`${styles.sampleProfile} ${styles.cssSampleIcon}`}
               >
-                <span> V </span> {/* Simple text icon */}
+                <span> V </span>
               </div>
             )}
             <span className={styles.sampleName}>{sample.name}</span>
