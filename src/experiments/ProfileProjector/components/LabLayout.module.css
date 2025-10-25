@@ -1,0 +1,118 @@
+/* Styles for the full-screen Lab Page */
+
+.labContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: #f1f5f9; /* Light Gray/Slate */
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* Reduced padding */
+  padding: 8px 24px;
+  background-color:#1f2937;; /* Dark Slate */
+  color: white;
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.header button {
+  padding: 6px 14px;
+  background-color: #f97316; /* Orange */
+  border-radius: 6px;
+  font-weight: 600;
+  color: white;
+  transition: background-color 0.2s;
+  cursor: pointer;
+  border: none;
+}
+
+.header button:hover {
+  background-color: #ea580c; /* Darker Orange */
+}
+
+.mainContent {
+  flex-grow: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* --- TUTORIAL MESSAGE BAR --- */
+.tutorialMessageBar {
+  flex-shrink: 0;
+  width: 100%;
+  overflow: hidden;
+  padding: 15px 25px;
+  background-color: #fef3c7;
+  color: #92400e;
+  border-bottom: 3px solid #f59e0b;
+  font-size: 1.1rem;
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+}
+
+.tutorialMessageText {
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+/* Tutorial Sidebar */
+.tutorialSidebar {
+  width: 380px;
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* Keep this for scrolling inside the sidebar */
+  flex-shrink: 0;
+  border-right: 1px solid #e2e8f0;
+  /* Removed display: flex and flex-direction: column as scrolling is handled by overflow-y */
+}
+
+.tutorialSidebar h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #1e2b3b; /* Corrected color code */
+  margin-bottom: 15px;
+}
+.tutorialSidebar ol {
+  list-style-type: decimal;
+  margin-left: 20px;
+  padding-left: 0;
+  line-height: 1.6;
+}
+.tutorialSidebar li {
+  margin-bottom: 10px;
+  color: #475569;
+}
+
+/* Lab Content Area (Screen + Controls) */
+.labContent {
+  flex-grow: 1;
+  padding: 20px;
+  display: grid;
+  /* **FIX: Increased projector area ratio** */
+  /* Was 2.5fr 1fr */
+  grid-template-columns: 3fr 1fr; /* Projector gets 3 parts, Controls get 1 */
+  gap: 20px;
+  overflow: hidden;
+}
+
+.projectorArea {
+  min-height: 0; /* Important for grid item sizing */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.controlPanelArea {
+  min-height: 0; /* Important for grid item sizing */
+  overflow: hidden; /* Control panel itself should handle internal scrolling */
+}

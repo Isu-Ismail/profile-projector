@@ -1,0 +1,106 @@
+/* Styles for the ProjectorScreen component */
+
+.outerWrapper {
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.display {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #fcd34d; /* Yellow-300 */
+  border-radius: 12px;
+  cursor: crosshair;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 4px solid #cbd5e1; /* Slate-300 */
+}
+
+.stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* transition is set inline for smooth animation */
+}
+
+.sampleImage {
+  width: 192px; /* w-48 */
+  height: 192px; /* h-48 */
+  object-fit: contain;
+  filter: brightness(0); /* Make it black profile */
+  transition: transform 0.3s ease-out;
+}
+
+/* NEW: This class overrides the filter for specific images */
+.noFilter {
+  filter: none;
+}
+
+.placeholderDot {
+  width: 10px;
+  height: 10px;
+  background-color: #ef4444; /* Red-500 */
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.crosshairOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.crosshairH {
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background-color: black;
+  opacity: 0.5;
+}
+
+.crosshairV {
+  position: absolute;
+  width: 1px;
+  height: 100%;
+  background-color: black;
+  opacity: 0.5;
+}
+
+/* NEW: Style for the dynamic alignment line */
+.alignmentLine {
+  position: absolute;
+  width: 100%;
+  height: 2px; /* Thicker than crosshair for distinction */
+  background-color: #0000ff; /* Blue line */
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%); /* Adjust for line thickness */
+  z-index: 5; /* Above sample, below crosshairs */
+  box-shadow: 0 0 5px rgba(0, 0, 255, 0.5); /* Glowing effect */
+  pointer-events: none; /* Do not interfere with mouse events */
+}
+
+.vignette {
+  position: absolute;
+  inset: 8px;
+  border: 24px solid rgba(148, 163, 184, 0.2); /* Slate-400/20 */
+  border-radius: 12px;
+  pointer-events: none;
+}

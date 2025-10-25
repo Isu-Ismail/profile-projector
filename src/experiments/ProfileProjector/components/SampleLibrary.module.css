@@ -1,0 +1,96 @@
+/* Styles for the SampleLibrary component */
+
+.container {
+    padding: 10px;
+    border: 1px solid #e2e8f0; /* Slate-200 */
+    border-radius: 8px;
+    background-color: #f8fafc; /* Slate-50 */
+}
+
+.title {
+    font-weight: bold;
+    color: #374151; /* Slate-700 */
+    margin-bottom: 12px;
+}
+
+.sampleGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.sampleButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+    border: 2px solid #cbd5e1; /* Slate-300 */
+    border-radius: 6px;
+    background-color: #ffffff;
+    transition: all 0.2s;
+}
+
+.sampleButton:hover {
+    border-color: #94a3b8; /* Slate-400 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sampleButton.selected {
+    border-color: #2563eb; /* Blue-600 */
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+}
+
+.sampleProfile {
+    width: 40px;
+    height: 40px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    /* Simulate a black profile outline for MOST images */
+    filter: invert(1) grayscale(100%) brightness(0.2);
+    margin-bottom: 4px;
+}
+
+/* **NEW RULE: For the V-Profile sample, remove the filter** */
+/* This targets the specific button for the V-Profile and then its .sampleProfile div */
+#sample-v-profile .sampleProfile {
+    filter: none; /* Remove all filters */
+}
+
+
+.sampleName {
+    font-size: 0.75rem;
+    color: #475569; /* Slate-600 */
+    text-align: center;
+}
+
+.error {
+    color: #dc2626; /* Red-600 */
+    font-weight: 600;
+}
+
+/* **NEW: Styles for CSS sample icon (no longer directly used by V-Profile, but kept)** */
+.cssSampleIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e2e8f0; /* Light gray background */
+    border: 1px dashed #94a3b8; /* Dashed border */
+    filter: none; /* Remove image filter */
+}
+.cssSampleIcon span {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #475569;
+}
+
+/* Ensure disabled buttons look distinct */
+.sampleButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #f8fafc;
+}
+.sampleButton:disabled:hover {
+    border-color: #cbd5e1; /* Prevent hover border change */
+    box-shadow: none; /* Prevent hover shadow */
+}

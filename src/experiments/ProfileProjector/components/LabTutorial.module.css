@@ -1,0 +1,153 @@
+/* Styles for the Lab Tutorial component */
+
+/* Main container - ADDED SCROLL LOGIC */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  /* --- ADDED FOR SCROLLING --- */
+  flex-grow: 1; /* Make it fill the sidebar */
+  overflow-y: auto; /* Make THIS div scroll */
+  min-height: 0; /* Flexbox trick for scrolling */
+  padding-right: 10px; /* Space for scrollbar */
+}
+
+.title {
+  font-size: 1.25rem; /* 20px / xl */
+  font-weight: bold;
+  color: #1e293b; /* Slate-800 */
+}
+
+/* --- Tutorial Cards (Selection View) --- */
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tutorialCard {
+  padding: 16px;
+  border: 1px solid #d1d5db; /* Gray-300 */
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #ffffff;
+  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  user-select: none;
+}
+
+.tutorialCard:hover {
+  background-color: #fff7ed; /* Orange-50 */
+  border-color: #f97316; /* Orange-600 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cardTitle {
+  font-weight: bold;
+  font-size: 1.125rem; /* lg */
+  color: #f97316; /* Orange-600 */
+  margin-top: 0;
+  margin-bottom: 4px;
+}
+
+.cardDescription {
+  font-size: 0.875rem; /* sm */
+  color: #475569; /* Slate-600 */
+  margin: 0;
+}
+
+/* --- Active Steps View (Displaying List) --- */
+.changeButton {
+  padding: 8px 12px;
+  background-color: #e2e8f0; /* Gray-200 */
+  color: #475569;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  margin-bottom: 10px;
+}
+
+.changeButton:hover {
+  background-color: #cbd5e1;
+}
+
+/* --- NEW: Single Step Card Styles --- */
+.stepCard {
+  background-color: #eff6ff; /* Blue-50 */
+  border: 1px solid #dbeafe; /* Blue-200 */
+  border-left: 5px solid #3b82f6; /* Blue-500 */
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.stepHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.stepNumber {
+  font-size: 0.875rem; /* sm */
+  font-weight: 600;
+  color: #1d4ed8; /* Blue-700 */
+  background-color: #dbeafe; /* Blue-200 */
+  padding: 4px 10px;
+  border-radius: 99px; /* Pill shape */
+}
+
+.stepImageContainer {
+  width: 100%;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #dbeafe; /* Blue-200 */
+}
+
+.stepImage {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.stepText {
+  font-size: 1rem; /* 16px */
+  color: #1e3a8a; /* Blue-800 */
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* --- (DELETED .stepsList, .stepItem, .active) --- */
+
+
+/* --- Styles for results displayed within the last step item --- */
+/* (These styles are unchanged and work fine) */
+.resultsInStep {
+  margin-top: 16px;
+  padding-top: 12px;
+  font-size: 0.9rem;
+  color: #1e3a8a;
+  border-top: 1px dashed #93c5fd; /* Blue-300 */
+}
+
+.resultsSeparator {
+ display: none; /* No longer need the <hr> */
+}
+
+
+.resultsTitleInStep {
+  font-weight: bold;
+  color: #1d4ed8;
+  margin-bottom: 5px;
+}
+
+.resultsInStep p {
+  margin: 4px 0;
+}
+
+.scrollFooter {
+  height: 1px;
+  width: 100%;
+  visibility: hidden;
+}

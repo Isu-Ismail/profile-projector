@@ -1,0 +1,106 @@
+/*
+ * VProfile.css
+ * This file styles the sharp V-Profile sample.
+ */
+
+/* Container for the V-Profile */
+.vProfileSample {
+  position: relative; /* Needed for absolute positioning of points */
+  width: 200px;      /* Base width - adjust if the shape needs to be wider */
+  height: 100px;     /* Base height - adjust if the shape needs to be taller */
+  background-color: transparent; /* Changed to transparent to see the yellow stage */
+  overflow: visible; /* Allow points to go slightly outside if needed */
+  
+  /* This centers the component on the stage */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-origin: center center; /* Ensures scaling happens from center */
+}
+
+/* Container for the repeating sharp teeth pattern */
+.sharpThreadPattern {
+  position: absolute;
+  /* Adjust top/bottom to position the shape vertically within vProfileSample */
+  bottom: 0; /* Align to the bottom of vProfileSample */
+  left: 0;
+  right: 0;
+  height: 80px; /* Set a specific height for the pattern container */
+  display: flex; /* Arrange teeth next to each other */
+  justify-content: center; /* Center the teeth horizontally */
+  align-items: flex-end; /* Align teeth to the bottom of sharpThreadPattern */
+  overflow: hidden; /* Hide any overflow if teeth are too wide */
+  background-color: transparent; /* Ensure no background here */
+}
+
+/* Individual tooth (the sharp V-shape, now inverted and red below) */
+.tooth {
+  width: 0;
+  height: 0;
+  /* Invert the triangle: border-bottom is the red part, border-left/right are transparent */
+  border-left: 30px solid transparent;  /* Half width of the V */
+  border-right: 30px solid transparent; /* Other half width of the V */
+  border-bottom: 80px solid #8B0000;    /* Height and deep red color, pointing UP */
+  flex-shrink: 0; /* Prevents teeth from shrinking */
+  
+  /* Overlap teeth slightly to get a continuous pattern
+     Adjust this value based on desired gap/overlap
+  */
+  margin: 0 -15px; /* Bring teeth closer together or separate them */
+}
+
+/* Add an overlay bar for the top red section */
+.sharpThreadPattern::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 20px; /* Height of the top red bar */
+    background-color: #8B0000; /* Deep red color */
+    z-index: 1; /* Ensure it's above the teeth triangles but below points */
+}
+
+
+/* Style for the grey points, with a plus icon */
+.pointDot {
+  position: absolute;
+  width: 20px; /* Size of the circle */
+  height: 20px;
+  background-color: transparent; /* No background color */
+  border: 1px solid #666; /* Grey border for the circle */
+  border-radius: 50%; /* Make it circular */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2; /* Ensure dots are above the pattern */
+
+  /* Plus icon */
+  font-size: 1.2rem; /* Size of the plus */
+  color: #666; /* Color of the plus */
+  line-height: 1; /* Adjust line height */
+}
+
+/* Using a pseudo-element for the plus sign */
+.pointDot::before {
+  content: '\002B'; /* Unicode for plus sign */
+}
+
+/* Positioning the points relative to the .vProfileSample container */
+/* These are adjusted to match the new image precisely */
+.point1 {
+  top: 15px;  /* Position from the top of vProfileSample */
+  left: 60px; /* Position from the left of vProfileSample */
+}
+.point2 {
+  top: 55px; /* Position from the top */
+  left: 85px; /* Position from the left */
+}
+.point3 {
+  top: 55px; /* Position from the top */
+  right: 85px; /* Position from the right */
+}
+.point4 {
+  top: 15px; /* Position from the top */
+  right: 60px; /* Position from the right */
+}

@@ -1,0 +1,50 @@
+/*
+  This file contains global styles and resets, as we are using
+  separate CSS Modules (e.g., LabLayout.module.css) for components.
+*/
+
+:root {
+  /* Define basic colors for the theme */
+  --color-primary: #f97316; /* Orange */
+  --color-secondary: #334155; /* Dark Slate */
+  --color-background: #f1f5f9; /* Light Gray/Slate */
+  --color-text-dark: #1e293b;
+  --color-text-light: #ffffff;
+}
+
+/* Global reset for full-screen lab and basic typography */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  color: var(--color-text-dark);
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+body {
+  background-color: var(--color-background);
+  overflow-y: auto; /* Default for non-lab pages */
+}
+
+/* Specific body style for the full-screen lab page to disable scrolling */
+body.lab-mode {
+  overflow: hidden;
+}
+
+/* Base button style (can be overridden by component CSS modules) */
+button {
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Remove default link styling */
+a {
+  text-decoration: none;
+  color: inherit;
+}

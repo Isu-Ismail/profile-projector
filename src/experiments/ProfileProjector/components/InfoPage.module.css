@@ -1,0 +1,163 @@
+/* Styles for Aim, Theory, Procedure, Test pages */
+
+.infoPageContainer {
+  padding: 3rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  min-height: calc(100vh - 80px); /* Adjust for header/footer */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.infoPageContainer h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #1f2937; /* slate-800 equivalent */
+  margin-bottom: 1.5rem;
+  border-bottom: 3px solid #f97316; /* orange-600 equivalent */
+  padding-bottom: 0.5rem;
+}
+
+.infoPageContainer h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #374151; /* slate-700 equivalent */
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.infoPageContainer p {
+  font-size: 1.1rem;
+  line-height: 1.75;
+  color: #4b5563; /* slate-600 equivalent */
+  margin-bottom: 1.25rem;
+}
+
+.infoPageContainer ul {
+  list-style-type: disc;
+  margin-left: 2rem;
+  padding-left: 0;
+  color: #4b5563;
+}
+
+.infoPageContainer li {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+/* --- Styles for MCQ --- */
+.mcqContainer {
+  margin-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1.5rem;
+}
+
+.questionBlock {
+  margin-bottom: 2rem;
+}
+
+.questionText {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 1rem;
+}
+
+.optionsList {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 1rem;
+}
+
+.optionItem {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  color: #4b5563;
+  transition: opacity 0.3s; /* For dimming effect */
+}
+
+.optionItem label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.radioInput {
+  margin-right: 0.75rem;
+  width: 1rem;
+  height: 1rem;
+  accent-color: #f97316;
+}
+
+/* --- NEW: Feedback Styles --- */
+.optionItem.correct label {
+  color: #16a34a; /* Green */
+  font-weight: 600;
+}
+
+.optionItem.incorrect label {
+  color: #dc2626; /* Red */
+  font-weight: 600; /* Bold the selected wrong answer */
+}
+
+.optionItem.dimmed {
+  opacity: 0.6; /* Dim unselected/incorrect options */
+}
+
+.feedbackMark {
+  margin-left: 0.5rem;
+  font-weight: bold;
+}
+
+.optionItem.correct .feedbackMark {
+  color: #16a34a; /* Green */
+}
+
+.optionItem.incorrect .feedbackMark {
+  color: #dc2626; /* Red */
+}
+
+/* Disabled state */
+input[type="radio"]:disabled {
+  cursor: not-allowed;
+}
+.optionItem label:has(input[type="radio"]:disabled) { /* Target label when radio inside is disabled */
+   cursor: default;
+}
+
+
+/* --- Submit Button Style --- */
+.submitButton {
+  margin-top: 2rem;
+  padding: 10px 20px;
+  background-color: #f97316;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submitButton:hover {
+  background-color: #ea580c;
+}
+
+/* --- Score Display Style --- */
+.scoreDisplay {
+  margin-top: 2.5rem;
+  padding: 1rem;
+  border: 2px solid #3b82f6; /* Blue border */
+  border-radius: 8px;
+  background-color: #eff6ff; /* Light blue background */
+  text-align: center;
+}
+
+.scoreDisplay h3 {
+  margin: 0;
+  color: #1d4ed8; /* Darker blue */
+  font-size: 1.5rem;
+}
+
+/* ----------------------------- */
