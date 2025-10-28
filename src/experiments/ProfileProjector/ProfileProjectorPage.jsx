@@ -9,7 +9,7 @@ const navItems = [
   { key: "Theory", label: "Theory" },
   { key: "Procedure", label: "Procedure" },
   { key: "Test1", label: "Pretest" },
-  { key: "Simulation", label: "Simulation" },
+  { key: "Simulation", label: "Virtual experiment" },
   { key: "Test2", label: "Posttest" },
   { key: "References", label: "References" },
 ];

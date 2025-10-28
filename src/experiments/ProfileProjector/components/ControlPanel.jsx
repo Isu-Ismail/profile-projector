@@ -298,7 +298,7 @@ function ControlPanel({
           id="restart-tutorial-button"
           disabled={isAngleMode} // Use prop
         >
-          Restart Tutorial
+          Home
         </button>
       </div>
     </div>

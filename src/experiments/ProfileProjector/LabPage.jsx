@@ -67,7 +67,7 @@ function ProfileProjectorLabPage() {
     ? currentStepData
       ? currentStepData.message
       : TUTORIAL_SCRIPTS[activeTutorialName].startMessage
-    : "Select a measurement tutorial from the panel on the left to begin.";
+    : "Click Gear Outer Diameter/Screw Outer diameter/Thread angle measurement";
   const highlightTargetId = currentStepData ? currentStepData.targetId : null;
 
   const showAlignmentLine =

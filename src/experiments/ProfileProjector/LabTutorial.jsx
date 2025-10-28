@@ -71,7 +71,7 @@ function LabTutorial({
           onClick={() => onTutorialSelect(null)}
           className={styles.changeButton}
         >
-          ← Change Tutorial
+          ← Home
         </button>
 
         {/* --- Single Step Card --- */}

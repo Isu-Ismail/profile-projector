@@ -270,11 +270,7 @@ export const pageContent = {
       {
         type: "list",
         items: [
-          "**Select Sample:** Choose an object (e.g., Gear) from the library.",
-          "**Align Start:** Use Arrow Keys to align the starting feature with the crosshair/guide line.",
-          "**Zero DRO:** Click the '0' button for the relevant axis (X or Y).",
-          "**Align End:** Use Arrow Keys to move and align the ending feature.",
-          "**Read DRO:** The value shown on the DRO is the measured dimension.",
+          "Refer the step by step procedure during the virtual experimentation."
         ],
       },
     ],
