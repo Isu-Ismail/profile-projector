@@ -211,3 +211,85 @@ input[type="radio"]:disabled {
   color: #1d4ed8; /* Darker blue */
   font-size: 1.5rem;
 }
+
+/* --- Add this at the end of the file --- */
+
+@media (max-width: 768px) {
+  .infoPageContainer {
+    padding: 1.5rem 1rem; /* Reduced padding significantly */
+    margin: 0; /* Remove horizontal margin */
+    max-width: 100%; /* Allow full width */
+    min-height: auto; /* Let content determine height */
+    box-shadow: none; /* Remove shadow */
+    border-radius: 0; /* Square corners */
+  }
+
+  .infoPageContainer h1 {
+    font-size: 1.75rem; /* Smaller H1 */
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .infoPageContainer h2 {
+    font-size: 1.25rem; /* Smaller H2 */
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    padding-left: 0.75rem;
+  }
+
+  .infoPageContainer p {
+    font-size: 1rem; /* Adjust text size */
+    line-height: 1.6; /* Adjust line height */
+    margin-bottom: 1rem;
+  }
+
+  .infoPageContainer ul {
+    margin-left: 0; /* Remove left margin */
+  }
+
+  .infoPageContainer li {
+    padding-left: 1.5rem; /* Adjust bullet padding */
+    margin-bottom: 0.5rem;
+  }
+
+  .infoPageContainer li::before {
+    font-size: 1.2rem; /* Smaller bullet */
+    line-height: 1.6;
+  }
+
+  /* --- MCQ Adjustments --- */
+  .mcqContainer {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+  }
+
+  .questionBlock {
+    margin-bottom: 1.5rem;
+  }
+
+  .questionText {
+    font-size: 1rem;
+  }
+
+  .optionsList {
+    gap: 0.5rem; /* Tighter options */
+  }
+
+  .infoPageContainer .optionItem {
+    padding: 0.75rem; /* Smaller padding in options */
+  }
+
+  .radioInput {
+    margin-right: 0.5rem;
+  }
+
+  .submitButton {
+    width: 100%; /* Make button full width */
+    padding: 12px 20px; /* Adjust padding */
+    font-size: 1rem;
+  }
+
+  .scoreDisplay {
+    margin-top: 2rem;
+  }
+}
