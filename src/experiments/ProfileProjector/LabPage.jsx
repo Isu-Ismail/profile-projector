@@ -534,7 +534,8 @@ function ProfileProjectorLabPage() {
         <h1>Desktop Recommended</h1>
         <p>
           This virtual lab requires a larger screen. Please switch to a computer
-          for the best experience.
+          for the best experience.You can still view the experiment by changing
+          to desktop site mode but functionality is limited.
         </p>
         <p>📱➡️💻</p>
         <button
