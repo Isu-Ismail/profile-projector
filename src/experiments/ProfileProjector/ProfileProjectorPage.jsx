@@ -1,9 +1,9 @@
-import React from "react";
-// Import NavLink
-import { useNavigate, useParams, NavLink } from "react-router-dom";
+import React, { useState } from "react"; // Import useState
+import { useNavigate, useParams } from "react-router-dom";
 import InfoPageLayout from "./components/InfoPageLayout";
+import MobileNavBar from "./components/MobileNavBar"; // <-- Import the new component
 import { pageContent } from "./data/content";
-import styles from "./ProfileProjectorPage.module.css"; // Your main layout CSS module
+import styles from "./ProfileProjectorPage.module.css"; // Import new module style
 
 const navItems = [
   { key: "Aim", path: "/experiments/profile-projector/Aim", label: "Aim" },
@@ -40,15 +40,34 @@ const navItems = [
 ];
 
 function ProfileProjectorPage() {
-  // Removed useNavigate as NavLink handles it
+  const navigate = useNavigate();
   const { topic } = useParams();
 
-  // Determine currentTopic based on the route parameter, default to 'Aim'
+  // --- ADD State for mobile menu ---
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const currentTopic = topic || "Aim";
 
-  // handleNavClick is no longer needed with NavLink
+  // Existing desktop navigation handler
+  const handleNavClick = (key) => {
+    if (key === "Simulation") {
+      navigate("/lab/profile-projector");
+    } else {
+      navigate(`/experiments/profile-projector/${key}`);
+    }
+  };
 
-  // Find the content key based on the current topic key
+  // --- ADD Toggle function ---
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  // --- ADD Mobile navigation handler ---
+  const handleMobileNavClick = (key) => {
+    setIsMobileMenuOpen(false); // Close menu on navigation
+    handleNavClick(key); // Reuse existing navigation logic
+  };
+
   const contentKey =
     navItems.find((item) => item.key === currentTopic)?.label || currentTopic;
 
@@ -56,25 +75,43 @@ function ProfileProjectorPage() {
     <div className={styles.mainWrapper}>
       {/* --- Top Header --- */}
       <header className={styles.header}>
+        {/* --- ADD Mobile Menu Button (CSS hides on desktop) --- */}
+        <button
+          className={styles.mobileMenuButton}
+          onClick={toggleMobileMenu}
+          aria-label="Toggle navigation menu"
+        >
+          ☰ {/* Simple hamburger icon */}
+        </button>
+        {/* --- END Button --- */}
+
         <h1 className={styles.headerTitle}>Profile Projector Virtual Lab</h1>
+
+        {/* --- ADD Conditional Dropdown (CSS positions it) --- */}
+        {/* Render it directly here; CSS handles display & positioning */}
+        <MobileNavBar
+          navItems={navItems}
+          currentTopicKey={currentTopic}
+          onNavigate={handleMobileNavClick} // Pass mobile handler
+          isOpen={isMobileMenuOpen} // Pass state to control CSS class
+        />
+        {/* --- END Dropdown --- */}
       </header>
 
       <div className={styles.contentArea}>
-        {/* Left Navigation Sidebar (Desktop) */}
+        {/* Left Navigation Sidebar (CSS hides on mobile) */}
         <nav className={styles.sidebar}>
           <ul className={styles.navList}>
             {navItems.map((item) => (
               <li key={item.key}>
-                {/* --- MODIFIED: Use NavLink --- */}
-                <NavLink
-                  to={item.path} // Use the defined path
-                  className={({ isActive }) =>
-                    `${styles.navButton} ${isActive ? styles.active : ""}`
-                  }
+                <button
+                  onClick={() => handleNavClick(item.key)} // Use original handler
+                  className={`${styles.navButton} ${
+                    currentTopic === item.key ? styles.active : ""
+                  }`}
                 >
                   {item.label}
-                </NavLink>
-                {/* --- END MODIFICATION --- */}
+                </button>
               </li>
             ))}
           </ul>
@@ -82,29 +119,9 @@ function ProfileProjectorPage() {
 
         {/* Main Content Area */}
         <div className={styles.mainContent}>
-          {/* Render content based on the determined key */}
           <InfoPageLayout pageKey={contentKey} content={pageContent} />
         </div>
       </div>
-
-      {/* --- ADD THIS: Mobile Tab Bar --- */}
-      <nav className={styles.mobileNavBar}>
-        {navItems.map((item) => (
-          // Use NavLink here too for active state and navigation
-          <NavLink
-            key={item.key}
-            to={item.path} // Use the defined path
-            className={({ isActive }) =>
-              `${styles.mobileNavButton} ${isActive ? styles.active : ""}`
-            }
-          >
-            {/* Optional: Add an icon here if desired */}
-            {/* <span className={styles.icon}>ICON</span> */}
-            <span>{item.label}</span>
-          </NavLink>
-        ))}
-      </nav>
-      {/* --- END: Mobile Tab Bar --- */}
     </div>
   );
 }
