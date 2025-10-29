@@ -11,7 +11,7 @@ const navItems = [
   { key: "Test1", label: "Pretest" },
   { key: "Simulation", label: "Virtual experiment" },
   { key: "Test2", label: "Posttest" },
-  { key: "References", label: "References" },
+  { key: "Acknowledgement", label: "Acknowledgement" },
 ];
 
 function ProfileProjectorPage() {

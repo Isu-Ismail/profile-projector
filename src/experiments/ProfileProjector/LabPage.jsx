@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { fetchExperimentSamples } from "../../repositories/lab_repo";
+// We don't fetch samples here, SampleLibrary handles its mock data
+// import { useQuery } from "@tanstack/react-query";
+// import { fetchExperimentSamples } from "../../repositories/lab_repo";
 
 import ControlPanel from "./components/ControlPanel";
 import ProjectorScreen from "./components/ProjectorScreen";
@@ -15,7 +16,6 @@ const REAL_CALIBRATION_LENGTH_MM = 100;
 const correctionFactor =
   REAL_CALIBRATION_LENGTH_MM / VIRTUAL_CALIBRATION_LENGTH_PIXELS; // 0.25
 
-// --- Pixel Targets (Existing) ---
 const GEAR_ALIGN_TARGET_Y_TOP = -86;
 const GEAR_ALIGN_TARGET_Y_BOTTOM = 84;
 const SCREW_ALIGN_TARGET_Y_TOP = -34;
@@ -28,6 +28,8 @@ const ANGLE_TARGETS = {
   27: { x: -28, y: -22 }, // Point 3: X: -7.000, Y: 5.500
   29: { x: -52, y: 22 }, // Point 4: X: -13.000, Y: -5.500
 };
+
+// **REMOVED HARDCODED_SAMPLES definition from here**
 
 function ProfileProjectorLabPage() {
   const navigate = useNavigate();
@@ -45,7 +47,7 @@ function ProfileProjectorLabPage() {
   const [currentTutorialStep, setCurrentTutorialStep] = useState(0);
   const [activeTutorialName, setActiveTutorialName] = useState(null);
 
-  // --- Angle State (Lifted from ControlPanel) ---
+  // --- Angle State ---
   const [isAngleMode, setIsAngleMode] = useState(false);
   const [anglePoints, setAnglePoints] = useState([]);
   const [calculatedAngle, setCalculatedAngle] = useState(null);
@@ -53,7 +55,7 @@ function ProfileProjectorLabPage() {
   // --- Refs ---
   const keysPressed = useRef({});
   const animationFrameId = useRef();
-  const mainContainerRef = useRef(null); // <-- NEW REF FOR FOCUS
+  const mainContainerRef = useRef(null);
 
   // --- Derived State (Tutorials) ---
   const activeSteps = activeTutorialName
@@ -74,6 +76,9 @@ function ProfileProjectorLabPage() {
     activeTutorialName === "GEAR_OD" &&
     (currentTutorialStep === 3 || currentTutorialStep === 5);
 
+  // Determine if a tutorial is active (used for disabling logic)
+  const isTutorialActive = !!activeTutorialName;
+
   // --- Helper Function to Advance Tutorial ---
   const advanceTutorial = useCallback(() => {
     const activeTutorial = TUTORIAL_SCRIPTS[activeTutorialName];
@@ -87,36 +92,54 @@ function ProfileProjectorLabPage() {
       currentStepIndex === -1 ||
       currentStepIndex + 1 >= activeTutorial.steps.length
     ) {
+      // Check if we just completed an angle measurement by adding the last point
+      if (
+        activeTutorialName === "ANGLE_MEASURE" &&
+        anglePoints.length === 4 &&
+        currentTutorialStep === 30
+      ) {
+        // Advance from step 30 ('Add Point 4') to step 31 ('Measurement Complete')
+        setCurrentTutorialStep(31);
+        console.log(
+          "Angle measurement calculation done, moving to final step."
+        );
+      } else {
+        console.log("Already at last step or step not found.");
+      }
       return;
     }
 
+    // Advance to the next step's ID
     setCurrentTutorialStep(activeTutorial.steps[currentStepIndex + 1].id);
-  }, [activeTutorialName, currentTutorialStep]);
+  }, [activeTutorialName, currentTutorialStep, anglePoints.length]);
 
   // --- Tutorial and State Resets ---
   const startTutorial = (name) => {
+    // Reset all relevant states
     setMeasuredData(null);
     setPointPosition({ x: 0, y: 0 });
     setZeroOffset({ x: 0, y: 0 });
     setIsAngleMode(false);
     setAnglePoints([]);
     setCalculatedAngle(null);
+    setMagnification(10); // Reset magnification
+    setCurrentUnit("mm"); // Reset unit
 
     if (name) {
       setActiveTutorialName(name);
       const firstStepId = TUTORIAL_SCRIPTS[name]?.steps[0]?.id || 0;
       setCurrentTutorialStep(firstStepId);
+      // Let the first step's highlight handle sample selection
+      setSelectedSample(null); // Deselect sample initially
     } else {
       setActiveTutorialName(null);
       setCurrentTutorialStep(0);
       setSelectedSample(null);
     }
-    // Focus the container after selection
-    mainContainerRef.current?.focus();
+    mainContainerRef.current?.focus(); // Focus for keyboard events
   };
 
-  // --- Core Lab Functions (Now with Tutorial Logic) ---
-
+  // --- Core Lab Functions ---
   const movePoint = useCallback(
     (axis, amount) => {
       setPointPosition((prev) => {
@@ -126,79 +149,84 @@ function ProfileProjectorLabPage() {
         };
         const currentPos = prev;
 
+        // Auto-stop and advance logic based on active tutorial
         if (activeTutorialName === "GEAR_OD" && axis === "y") {
           if (currentTutorialStep === 3) {
-            const crossedTopLine =
+            // Align Top
+            const crossed =
               (currentPos.y > GEAR_ALIGN_TARGET_Y_TOP &&
                 newPos.y <= GEAR_ALIGN_TARGET_Y_TOP) ||
               (currentPos.y < GEAR_ALIGN_TARGET_Y_TOP &&
                 newPos.y >= GEAR_ALIGN_TARGET_Y_TOP);
-            if (crossedTopLine) {
+            if (crossed) {
               newPos.y = GEAR_ALIGN_TARGET_Y_TOP;
               advanceTutorial();
             }
           } else if (currentTutorialStep === 5) {
-            const crossedBottomLine =
+            // Align Bottom
+            const crossed =
               (currentPos.y > GEAR_ALIGN_TARGET_Y_BOTTOM &&
                 newPos.y <= GEAR_ALIGN_TARGET_Y_BOTTOM) ||
               (currentPos.y < GEAR_ALIGN_TARGET_Y_BOTTOM &&
                 newPos.y >= GEAR_ALIGN_TARGET_Y_BOTTOM);
-            if (crossedBottomLine) {
+            if (crossed) {
               newPos.y = GEAR_ALIGN_TARGET_Y_BOTTOM;
               advanceTutorial();
             }
           }
         } else if (activeTutorialName === "SCREW_OD" && axis === "y") {
           if (currentTutorialStep === 11) {
-            const crossedTopScrewLine =
+            // Align Top
+            const crossed =
               (currentPos.y > SCREW_ALIGN_TARGET_Y_TOP &&
                 newPos.y <= SCREW_ALIGN_TARGET_Y_TOP) ||
               (currentPos.y < SCREW_ALIGN_TARGET_Y_TOP &&
                 newPos.y >= SCREW_ALIGN_TARGET_Y_TOP);
-            if (crossedTopScrewLine) {
+            if (crossed) {
               newPos.y = SCREW_ALIGN_TARGET_Y_TOP;
               advanceTutorial();
             }
           } else if (currentTutorialStep === 13) {
-            const crossedBottomScrewLine =
+            // Align Bottom
+            const crossed =
               (currentPos.y > SCREW_ALIGN_TARGET_Y_BOTTOM &&
                 newPos.y <= SCREW_ALIGN_TARGET_Y_BOTTOM) ||
               (currentPos.y < SCREW_ALIGN_TARGET_Y_BOTTOM &&
                 newPos.y >= SCREW_ALIGN_TARGET_Y_BOTTOM);
-            if (crossedBottomScrewLine) {
+            if (crossed) {
               newPos.y = SCREW_ALIGN_TARGET_Y_BOTTOM;
               advanceTutorial();
             }
           }
         } else if (activeTutorialName === "ANGLE_MEASURE") {
+          // Target is for the CURRENT alignment step (22, 24, 26, 28)
           const target = ANGLE_TARGETS[currentTutorialStep];
-
           if (target) {
             if (axis === "x") {
               const crossedX =
                 (currentPos.x > target.x && newPos.x <= target.x) ||
                 (currentPos.x < target.x && newPos.x >= target.x);
               if (crossedX) {
-                newPos.x = target.x;
-                if (Math.abs(currentPos.y - target.y) < 1) {
-                  advanceTutorial();
+                newPos.x = target.x; // Arrest X
+                // Check if Y is already aligned (within tolerance)
+                if (Math.abs(currentPos.y - target.y) < 2) {
+                  advanceTutorial(); // Advance if both aligned
                 }
               }
-            }
-            if (axis === "y") {
+            } else if (axis === "y") {
               const crossedY =
                 (currentPos.y > target.y && newPos.y <= target.y) ||
                 (currentPos.y < target.y && newPos.y >= target.y);
               if (crossedY) {
-                newPos.y = target.y;
-                if (Math.abs(currentPos.x - target.x) < 1) {
-                  advanceTutorial();
+                newPos.y = target.y; // Arrest Y
+                // Check if X is already aligned (within tolerance)
+                if (Math.abs(currentPos.x - target.x) < 2) {
+                  advanceTutorial(); // Advance if both aligned
                 }
               }
             }
           }
         }
-
         return newPos;
       });
     },
@@ -208,7 +236,7 @@ function ProfileProjectorLabPage() {
   const setRelativeZero = (axis) => {
     setZeroOffset((prev) => {
       const newZeroOffset = { ...prev, [axis]: pointPosition[axis] };
-
+      // Advance tutorial if this was the required action
       if (
         currentStepData &&
         currentStepData.targetId === `zero-${axis}-button`
@@ -222,11 +250,18 @@ function ProfileProjectorLabPage() {
   const resetAbsoluteZero = () => {
     setPointPosition({ x: 0, y: 0 });
     setZeroOffset({ x: 0, y: 0 });
+    // Advance tutorial if this was the required action (unlikely for absolute zero)
+    if (
+      currentStepData &&
+      currentStepData.targetId === `absolute-zero-button`
+    ) {
+      advanceTutorial();
+    }
   };
 
   const handleMagnificationChange = (level) => {
     setMagnification(level);
-
+    // Advance tutorial if this was the required action
     if (currentStepData && currentStepData.targetId === `mag-${level}x`) {
       advanceTutorial();
     }
@@ -234,24 +269,26 @@ function ProfileProjectorLabPage() {
 
   const handleSampleSelect = (sample) => {
     setSelectedSample(sample);
-
+    // Advance tutorial if this was the required action
     if (currentStepData && currentStepData.targetId === `sample-${sample.id}`) {
       advanceTutorial();
     }
   };
 
   const handleRecalibrate = () => {
+    // Linked to "Home" button
     startTutorial(null);
   };
 
   // --- Angle Mode Handlers ---
-
   const toggleAngleMode = () => {
     const newMode = !isAngleMode;
     setIsAngleMode(newMode);
-    setAnglePoints([]);
-    setCalculatedAngle(null);
+    setAnglePoints([]); // Reset points when toggling
+    setCalculatedAngle(null); // Reset calculation
+    setMeasuredData(null); // Clear any previous measurement display
 
+    // Advance tutorial if this was the required action
     if (
       newMode &&
       currentStepData &&
@@ -259,23 +296,29 @@ function ProfileProjectorLabPage() {
     ) {
       advanceTutorial();
     }
-    // Focus container when entering/exiting angle mode
-    mainContainerRef.current?.focus();
+    // If exiting angle mode during the angle tutorial, reset the tutorial
+    if (!newMode && activeTutorialName === "ANGLE_MEASURE") {
+      startTutorial(null); // Go back to tutorial selection
+    }
+
+    mainContainerRef.current?.focus(); // Refocus after button click
   };
 
   const handleAddPoint = () => {
-    if (anglePoints.length >= 4) return;
+    if (anglePoints.length >= 4) return; // Max 4 points
 
-    const virtual_relativeX_pixels = pointPosition.x - zeroOffset.x;
-    const virtual_relativeY_pixels = pointPosition.y - zeroOffset.y;
-    const real_relativeX_mm = virtual_relativeX_pixels * correctionFactor;
-    const real_relativeY_mm = virtual_relativeY_pixels * correctionFactor;
+    const real_relativeX_mm =
+      (pointPosition.x - zeroOffset.x) * correctionFactor;
+    const real_relativeY_mm =
+      (pointPosition.y - zeroOffset.y) * correctionFactor;
 
     setAnglePoints((prevPoints) => [
       ...prevPoints,
-      { x: real_relativeX_mm, y: -real_relativeY_mm },
+      // Store the actual DRO values (real mm)
+      { x: real_relativeX_mm, y: -real_relativeY_mm }, // Negate Y to match DRO display
     ]);
 
+    // Advance tutorial if this was the required action
     if (currentStepData && currentStepData.targetId === "add-point-button") {
       advanceTutorial();
     }
@@ -285,10 +328,9 @@ function ProfileProjectorLabPage() {
 
   // Effect to calculate OD measurement
   useEffect(() => {
+    // Skip if in angle mode
     if (isAngleMode) {
-      if (measuredData && measuredData.userMeasuredDiameter) {
-        setMeasuredData(null);
-      }
+      if (measuredData?.userMeasuredDiameter) setMeasuredData(null);
       return;
     }
 
@@ -305,35 +347,33 @@ function ProfileProjectorLabPage() {
       lastStepId = steps[steps.length - 1].id;
     }
 
+    isComplete =
+      isTutorialActive &&
+      currentTutorialStep === lastStepId &&
+      lastStepId !== 0;
+
     if (
-      activeTutorialName === "GEAR_OD" &&
-      currentTutorialStep === lastStepId
+      isComplete &&
+      (activeTutorialName === "GEAR_OD" || activeTutorialName === "SCREW_OD")
     ) {
       finalY_mm = (pointPosition.y - zeroOffset.y) * correctionFactor;
-      diameterKey = "diameter";
-      isComplete = true;
-    } else if (
-      activeTutorialName === "SCREW_OD" &&
-      currentTutorialStep === lastStepId
-    ) {
-      finalY_mm = (pointPosition.y - zeroOffset.y) * correctionFactor;
-      diameterKey = "screwDiameter";
-      isComplete = true;
+      diameterKey =
+        activeTutorialName === "GEAR_OD" ? "diameter" : "screwDiameter";
     }
 
-    if (isComplete && selectedSample) {
+    if (
+      isComplete &&
+      selectedSample &&
+      (diameterKey === "diameter" || diameterKey === "screwDiameter")
+    ) {
       setMeasuredData({
         [diameterKey]: selectedSample[diameterKey] || selectedSample.diameter,
-        angle: selectedSample.angle,
-        pitch: selectedSample.pitch,
+        angle: selectedSample.angle, // May be undefined
+        pitch: selectedSample.pitch, // May be undefined
         userMeasuredDiameter: Math.abs(finalY_mm).toFixed(3) + " mm",
       });
-    } else if (
-      !isComplete &&
-      measuredData &&
-      measuredData.userMeasuredDiameter
-    ) {
-      setMeasuredData(null);
+    } else if (!isComplete && measuredData?.userMeasuredDiameter) {
+      setMeasuredData(null); // Clear if not complete
     }
   }, [
     currentTutorialStep,
@@ -345,96 +385,141 @@ function ProfileProjectorLabPage() {
     measuredData,
   ]);
 
-  // Effect to calculate Angle measurement
+  // =================================================================
+  // === 📐 EFFECT TO CALCULATE ANGLE (FIXED LOGIC) 📐 ===
+  // =================================================================
   useEffect(() => {
-    if (anglePoints.length === 4) {
-      const [p1, p2, p3, p4] = anglePoints;
-      // Flank 1 (P4 -> P3)
-      const dx1 = p3.x - p4.x; // -7 - (-13) = 6
-      const dy1 = p3.y - p4.y; // 5.5 - (-5.5) = 11
-      if (Math.abs(dx1) < 1e-9) {
-        console.error("Angle calculation error: Left flank is vertical.");
-        setCalculatedAngle(0);
-        return;
-      }
-      const slope1 = dy1 / dx1; // 11 / 6
-
-      // Flank 2 (P1 -> P2)
-      const dx2 = p2.x - p1.x; // 7 - 13 = -6
-      const dy2 = p2.y - p1.y; // 5.5 - (-5.5) = 11
-      if (Math.abs(dx2) < 1e-9) {
-        console.error("Angle calculation error: Right flank is vertical.");
-        setCalculatedAngle(0);
-        return;
-      }
-      const slope2 = dy2 / dx2; // 11 / -6
-
-      const tanTheta = Math.abs((slope2 - slope1) / (1 + slope1 * slope2));
-      const angleInDegrees = (Math.atan(tanTheta) * 180) / Math.PI;
-
-      const randomOffset = Math.random() * 6 - 3; // Range [-3.0, 3.0)
-      const randomizedAngle = 60.0 + randomOffset;
-
-      setCalculatedAngle(randomizedAngle);
-
-      setMeasuredData({
-        referenceAngle: selectedSample?.angle || "60.00°",
-        userMeasuredAngle: randomizedAngle.toFixed(2) + "°",
-      });
+    // Skip if not in angle mode or not enough points
+    if (!isAngleMode || anglePoints.length !== 4) {
+      if (calculatedAngle !== null) setCalculatedAngle(null); // Clear if exiting mode or resetting points
+      if (measuredData?.userMeasuredAngle) setMeasuredData(null); // Clear measured data too
+      return;
     }
-  }, [anglePoints, selectedSample]);
 
-  // *** NEW: Define handleKeyDown as a useCallback ***
+    const [p1, p2, p3, p4] = anglePoints;
+
+    // Create vector for Line 1 (from P1 to P2)
+    const v1 = {
+      x: p2.x - p1.x,
+      y: p2.y - p1.y,
+    };
+
+    // Create vector for Line 2 (from P3 to P4)
+    const v2 = {
+      x: p4.x - p3.x,
+      y: p4.y - p3.y,
+    };
+
+    // Calculate Dot Product
+    const dotProduct = v1.x * v2.x + v1.y * v2.y;
+
+    // Calculate Magnitudes
+    const magV1 = Math.sqrt(v1.x * v1.x + v1.y * v1.y);
+    const magV2 = Math.sqrt(v2.x * v2.x + v2.y * v2.y);
+
+    let angleDeg = 0;
+
+    if (magV1 > 0 && magV2 > 0) {
+      // Calculate cosine of the angle
+      // We use Math.abs(dotProduct) to always get the acute angle (between 0 and 90)
+      // which is what we want for a thread flank.
+      let cosTheta = Math.abs(dotProduct) / (magV1 * magV2);
+
+      // Clamp value to [-1, 1] to avoid floating point errors with acos
+      cosTheta = Math.min(1.0, Math.max(-1.0, cosTheta));
+
+      // Calculate angle in radians
+      const angleRad = Math.acos(cosTheta);
+
+      // Convert to degrees
+      angleDeg = angleRad * (180 / Math.PI);
+    }
+
+    setCalculatedAngle(angleDeg); // Store the actual calculation for display
+
+    // Update measuredData specifically for angle results
+    setMeasuredData({
+      referenceAngle: selectedSample?.angle || "60.00°", // Corrected default
+      userMeasuredAngle: angleDeg.toFixed(2) + "°",
+      // Include other relevant sample data if available
+      pitch: selectedSample?.pitch,
+    });
+
+    // Advance tutorial automatically AFTER calculation if on the 'add point 4' step
+    // Note: The advanceTutorial in handleAddPoint handles advancing *to* the calculation step
+    if (currentTutorialStep === 30) {
+      // Assuming 30 is the 'Add Point 4' step ID
+      advanceTutorial(); // Advance to the final results step (31)
+    }
+  }, [
+    anglePoints,
+    isAngleMode,
+    selectedSample,
+    // correctionFactor is not needed here, already applied in handleAddPoint
+    currentTutorialStep,
+    advanceTutorial,
+  ]);
+  // =================================================================
+  // === END OF FIXED ANGLE CALCULATION ==============================
+  // =================================================================
+
+  // Keyboard Handling Effect
   const handleKeyDown = useCallback(
     (e) => {
-      // 1px = 0.25mm
-      // 8px = 2.0mm
-      const keyAmount = e.shiftKey ? 8 : 1; // UPDATED SPEED
+      // Allow keyboard movement only if NOT globally disabled (e.g., during specific animations later)
+      // AND if the tutorial doesn't require clicking a specific button RIGHT NOW
+      const shouldAllowMovement = !(
+        isTutorialActive &&
+        highlightTargetId &&
+        highlightTargetId !== "dro-panel" &&
+        highlightTargetId !== "stage-controls-grid" &&
+        highlightTargetId !== "projector-screen"
+      );
+
+      if (!shouldAllowMovement) return; // Ignore keypress if specific button needs clicking
+
+      const keyAmount = e.shiftKey ? 8 : 1; // Speed adjustment
 
       switch (e.key) {
         case "ArrowUp":
-          e.preventDefault(); // Prevents page scroll
+          e.preventDefault();
           movePoint("y", -keyAmount);
           break;
         case "ArrowDown":
-          e.preventDefault(); // Prevents page scroll
+          e.preventDefault();
           movePoint("y", keyAmount);
           break;
         case "ArrowLeft":
-          e.preventDefault(); // Prevents page scroll
+          e.preventDefault();
           movePoint("x", -keyAmount);
           break;
         case "ArrowRight":
-          e.preventDefault(); // Prevents page scroll
+          e.preventDefault();
           movePoint("x", keyAmount);
           break;
         default:
-          break; // Do nothing for other keys
+          break;
       }
     },
-    [movePoint] // Dependency array for useCallback
+    [movePoint, isTutorialActive, highlightTargetId] // Add dependencies
   );
 
-  // *** REMOVED: The old useEffect for window.addEventListener ***
-
-  // *** NEW: Effect to focus the container on mount ***
+  // Focus container on mount
   useEffect(() => {
     mainContainerRef.current?.focus();
   }, []);
 
   // --- Render ---
-
   return (
     <div
       className={styles.labContainer}
-      onKeyDown={handleKeyDown} // <-- ADDED EVENT HANDLER
-      tabIndex="0" // <-- ADDED TABINDEX TO MAKE DIV FOCUSABLE
-      ref={mainContainerRef} // <-- ADDED REF
-      onClick={() => mainContainerRef.current?.focus()} // <-- ADDED onClick to refocus
+      onKeyDown={handleKeyDown}
+      tabIndex="0" // Makes div focusable
+      ref={mainContainerRef}
+      onClick={() => mainContainerRef.current?.focus()} // Refocus on click
     >
       <header className={styles.header}>
         <h1 className="text-xl font-bold">Profile Projector Virtual Lab</h1>
-
         <button onClick={() => navigate("/experiments/profile-projector/Aim")}>
           ← Back to Experiment
         </button>
@@ -450,7 +535,7 @@ function ProfileProjectorLabPage() {
         <div className={styles.tutorialSidebar}>
           <LabTutorial
             activeTutorialName={activeTutorialName}
-            currentStepId={currentStepData?.id}
+            currentStepId={currentTutorialStep} // Pass ID, not data object
             onTutorialSelect={startTutorial}
             allTutorials={TUTORIAL_SCRIPTS}
             measuredData={measuredData}
@@ -469,7 +554,7 @@ function ProfileProjectorLabPage() {
 
           <div className={styles.controlPanelArea}>
             <ControlPanel
-              // Core State
+              // Pass all necessary props down
               pointPosition={pointPosition}
               zeroOffset={zeroOffset}
               magnification={magnification}
@@ -477,19 +562,17 @@ function ProfileProjectorLabPage() {
               correctionFactor={correctionFactor}
               selectedSample={selectedSample}
               measuredData={measuredData}
-              // Core Handlers
-              movePoint={movePoint}
+              movePoint={movePoint} // Pass down even if not used by ControlPanel buttons
               setRelativeZero={setRelativeZero}
               resetAbsoluteZero={resetAbsoluteZero}
               setMagnification={handleMagnificationChange}
               setCurrentUnit={setCurrentUnit}
               onSampleSelect={handleSampleSelect}
               onRecalibrate={handleRecalibrate}
-              // Tutorial State
               highlightTargetId={highlightTargetId}
               currentTutorialStep={currentTutorialStep}
               activeTutorialName={activeTutorialName}
-              // Angle State & Handlers
+              isTutorialActive={isTutorialActive} // Pass the lock state
               isAngleMode={isAngleMode}
               anglePoints={anglePoints}
               calculatedAngle={calculatedAngle}

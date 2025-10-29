@@ -31,20 +31,22 @@
   border-radius: 8px;
   cursor: pointer;
   background-color: #ffffff;
-  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  transition: all 0.2s ease-in-out; /* MODIFIED: Animate all */
   user-select: none;
+  transform: translateY(0); /* MODIFIED: Base for hover */
 }
 
 .tutorialCard:hover {
-  background-color: #fff7ed; /* Orange-50 */
-  border-color: #f97316; /* Orange-600 */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #eff6ff;
+  border-color: #3b82f6;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* MODIFIED: Deeper shadow */
+  transform: translateY(-4px); /* MODIFIED: Lift effect */
 }
 
 .cardTitle {
   font-weight: bold;
   font-size: 1.125rem; /* lg */
-  color: #f97316; /* Orange-600 */
+  color: #3b82f6;
   margin-top: 0;
   margin-bottom: 4px;
 }
@@ -73,58 +75,66 @@
 
 /* --- NEW: Single Step Card Styles --- */
 .stepCard {
-  background-color: #eff6ff; /* Blue-50 */
-  border: 1px solid #dbeafe; /* Blue-200 */
-  border-left: 5px solid #3b82f6; /* Blue-500 */
+  background-color: #ffffff; /* White background */
+  border: 2px solid #3b82f6; /* MODIFIED: Blue border around the whole card */
   border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* MODIFIED: Lighter shadow so border stands out */
+  overflow: hidden; /* To clip header corners */
 }
 
 .stepHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 0;
+  background: linear-gradient(
+    90deg,
+    #3b82f6 0%,
+    #2563eb 100%
+  ); /* Gradient header */
+  padding: 12px 16px; /* Header padding */
 }
 
 .stepNumber {
   font-size: 0.875rem; /* sm */
   font-weight: 600;
-  color: #1d4ed8; /* Blue-700 */
-  background-color: #dbeafe; /* Blue-200 */
+  color: #2563eb; /* Blue text */
+  background-color: #ffffff; /* White pill */
   padding: 4px 10px;
   border-radius: 99px; /* Pill shape */
 }
 
 .stepImageContainer {
   width: 100%;
-  margin-bottom: 12px;
-  border-radius: 6px;
+  margin-bottom: 0;
+  border-radius: 0;
   overflow: hidden;
-  border: 1px solid #dbeafe; /* Blue-200 */
+  border: none;
+  padding: 16px 16px 0;
+  box-sizing: border-box;
 }
 
 .stepImage {
   width: 100%;
   height: auto;
   display: block;
+  border-radius: 6px;
 }
 
 .stepText {
-  font-size: 1rem; /* 16px */
-  color: #1e3a8a; /* Blue-800 */
+  font-size: 1rem;
+  color: #1e3a8a;
   line-height: 1.6;
   margin: 0;
+  padding: 16px;
 }
 
 /* --- (DELETED .stepsList, .stepItem, .active) --- */
 
-
 /* --- Styles for results displayed within the last step item --- */
-/* (These styles are unchanged and work fine) */
 .resultsInStep {
-  margin-top: 16px;
+  margin: 0 16px 16px; /* Align with padding */
   padding-top: 12px;
   font-size: 0.9rem;
   color: #1e3a8a;
@@ -132,9 +142,8 @@
 }
 
 .resultsSeparator {
- display: none; /* No longer need the <hr> */
+  display: none; /* No longer need the <hr> */
 }
-
 
 .resultsTitleInStep {
   font-weight: bold;

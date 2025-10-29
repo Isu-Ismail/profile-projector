@@ -1,10 +1,68 @@
 /* HighlightOverlay.module.css */
+
+/* --- Keyframes for Animations --- */
+
+/* A "poke" animation for the arrow to draw the eye */
+@keyframes poke-right {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(10px); /* Moves the arrow right */
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* A subtle "pulse" for the box itself */
+@keyframes pulse-blue {
+  0% {
+    /* Starts with a 0px blue shadow */
+    box-shadow: 0 0 0 0px rgba(29, 155, 240, 0.7);
+  }
+  100% {
+    /* Fades out to a 15px transparent shadow */
+    box-shadow: 0 0 0 15px rgba(29, 156, 240, 0.464);
+  }
+}
+
+/* --- Main Overlay Style --- */
 .highlightOverlay {
-    position: fixed; /* Must be fixed to stay relative to the viewport */
-    background-color: rgba(255, 255, 0, 0.4); /* Semi-transparent yellow */
-    border: 3px solid #ff0000; /* Bright border for visibility */
-    border-radius: 8px;
-    z-index: 1000; /* Must be high to overlay other content */
-    pointer-events: none; /* Allows clicks to pass through to the element underneath */
-    transition: width 0.3s, height 0.3s, top 0.3s, left 0.3s;
+  position: fixed; /* Must be fixed to stay relative to the viewport */
+
+  /* New Style: Softer blue fill */
+  background-color: rgba(29, 155, 240, 0.15);
+  border-radius: 8px;
+
+  /* Removed the hard border.
+    The animation now creates a "sonar" or "pulse" effect 
+    that is more visible and less distracting.
+  */
+  animation: pulse-blue 1.5s infinite;
+
+  z-index: 1000; /* Must be high to overlay other content */
+  pointer-events: none; /* Allows clicks to pass through */
+
+  /* Smooth transition for when the target changes */
+  transition: width 0.3s ease-out, height 0.3s ease-out, top 0.3s ease-out,
+    left 0.3s ease-out;
+}
+
+/* --- Animated Arrow Pointer --- */
+.highlightOverlay::after {
+  content: "➡️"; /* Pointing hand emoji */
+  position: absolute;
+
+  /* Position it just outside the top-left corner of the box */
+  top: 5px;
+  left: -40px; /* 40px to the left */
+
+  font-size: 30px;
+
+  /* Apply the "poke" animation */
+  animation: poke-right 1.2s infinite ease-in-out;
+
+  /* Add a drop shadow to the emoji to make it pop */
+  filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
 }

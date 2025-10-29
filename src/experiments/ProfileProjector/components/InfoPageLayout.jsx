@@ -26,6 +26,9 @@ const InfoPageLayout = ({ pageKey, content }) => {
   const mcqSection = pageData.sections.find((sec) => sec.type === "mcq");
   const questions = mcqSection?.questions || [];
 
+  // --- NEW: Check if all questions have been answered ---
+  const allQuestionsAnswered = Object.keys(answers).length === questions.length;
+
   const handleAnswerSelect = (questionId, optionIndex) => {
     if (isSubmitted) return;
     setAnswers((prev) => ({
@@ -35,7 +38,7 @@ const InfoPageLayout = ({ pageKey, content }) => {
   };
 
   const handleSubmit = () => {
-    if (!questions.length) return;
+    if (!questions.length || !allQuestionsAnswered) return; // Extra check
 
     let correctCount = 0;
     questions.forEach((q, qIndex) => {
@@ -126,7 +129,12 @@ const InfoPageLayout = ({ pageKey, content }) => {
                 );
               })}
               {!isSubmitted && (
-                <button onClick={handleSubmit} className={styles.submitButton}>
+                <button
+                  onClick={handleSubmit}
+                  className={styles.submitButton}
+                  // --- MODIFIED: Added disabled prop ---
+                  disabled={!allQuestionsAnswered}
+                >
                   Submit Answers
                 </button>
               )}

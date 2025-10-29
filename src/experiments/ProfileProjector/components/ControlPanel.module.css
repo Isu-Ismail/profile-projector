@@ -27,7 +27,7 @@
 .droPanel {
   background-color: #1e293b;
   color: #67e8f9;
-  padding: 16px;
+  padding: 16px; /* MODIFIED: Was 16px */
   border-radius: 12px;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
   border: 1px solid #334155;
@@ -37,52 +37,70 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 6px; /* MODIFIED: Was 8px */
 }
 .droTitle {
-  font-size: 0.875rem;
+  font-size: 0.75rem; /* MODIFIED: Was 0.875rem */
   font-weight: 600;
   color: #94a3b8;
   letter-spacing: 0.05em;
 }
 .droUnitSymbol {
   font-family: monospace;
-  font-size: 1.125rem;
+  font-size: 1rem; /* MODIFIED: Was 1.125rem */
   color: #06b6d4;
 }
 .droValueRow {
   font-family: monospace;
-  font-size: 2.25rem;
+  /* MODIFIED: Font size moved to children for more control */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 8px;
+  margin-top: 2px; /* MODIFIED: Was 8px */
 }
 .droAxisLabel {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px; /* MODIFIED: Was 8px */
   color: #0891b2;
+  font-size: 1.1rem; /* MODIFIED: Was part of droValueRow */
+  flex-shrink: 0; /* MODIFIED: Added */
 }
-.droValue { font-weight: bold; }
+.droValue {
+  font-weight: bold;
+  font-size: 1.75rem; /* MODIFIED: Was 2.25rem */
+  flex-grow: 1; /* MODIFIED: Added */
+  text-align: right; /* MODIFIED: Added */
+  white-space: nowrap; /* MODIFIED: Added */
+}
+
 .zeroButton {
-  font-size: 0.75rem;
+  font-size: 0.65rem; /* MODIFIED: Was 0.7rem */
+  font-weight: bold;
+  width: 20px; /* MODIFIED: Was 20px */
+  height: 20px; /* MODIFIED: Was 20px */
+  border-radius: 4px; /* Slightly rounded square */
   background-color: rgba(56, 189, 248, 0.2);
   color: #67e8f9;
-  font-weight: bold;
-  width: 24px;
-  height: 24px;
-  border-radius: 4px;
   transition: background-color 0.2s;
-  cursor: pointer; /* Ensure cursor changes */
-  border: none; /* Remove default border */
+  cursor: pointer;
+  border: none;
+  line-height: 1;
+  padding: 0;
+  margin-left: 4px;
+  display: flex; /* Use flex to perfectly center '0' */
+  justify-content: center;
+  align-items: center;
 }
-.zeroButton:hover { background-color: rgba(6, 182, 212, 0.3); }
+.zeroButton:hover {
+  background-color: rgba(6, 182, 212, 0.3);
+}
 .zeroButton:disabled {
   background-color: rgba(100, 116, 139, 0.2);
   color: #94a3b8;
   cursor: not-allowed;
 }
+
 
 
 /* --- Magnification/Unit Control Grid --- */
@@ -107,6 +125,7 @@
 
 /* --- NEW: Angle Mode Toggle Button --- */
 .angleModeToggle {
+    
     margin-top: 5px; /* Add some space */
     border-top: 1px solid #e2e8f0;
     padding-top: 15px;
@@ -141,6 +160,42 @@
 
 
 /* --- NEW: Angle Measurement Section --- */
+.angleModeToggle {
+  margin-top: 5px; /* Add some space */
+  border-top: 1px solid #e2e8f0;
+  padding-top: 15px;
+}
+.modeButton {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background-color: #ffffff;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.modeButton:hover {
+  background-color: #f8fafc;
+  border-color: #94a3b8;
+}
+.modeButton.activeMode {
+  /* --- THIS BLOCK IS MODIFIED --- */
+  background-color: #2563eb; /* MODIFIED: Strong blue from unit buttons */
+  border: none; /* MODIFIED: Removed border */
+  color: white; /* MODIFIED: White text */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* MODIFIED: Added shadow */
+}
+.modeButton:disabled {
+  background-color: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+  border-color: #e2e8f0;
+}
+
+/* --- NEW: Angle Measurement Section --- */
 .angleMeasureSection {
   background-color: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -155,7 +210,8 @@
   border-collapse: collapse;
   font-size: 0.85rem;
 }
-.pointsTable th, .pointsTable td {
+.pointsTable th,
+.pointsTable td {
   border: 1px solid #e2e8f0;
   padding: 6px 8px;
   text-align: center;
@@ -191,19 +247,19 @@
   cursor: not-allowed;
 }
 .angleResult {
-    margin-top: 10px;
-    font-weight: bold;
-    color: #1e40af; /* Dark blue */
-    text-align: center;
-    background-color: #dbeafe;
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #93c5fd;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #1e40af; /* Dark blue */
+  text-align: center;
+  background-color: #dbeafe;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #93c5fd;
 }
 
-
 /* --- Results Table Styles --- */
-.resultsTable { /* Keep existing styles */
+.resultsTable {
+  /* Keep existing styles */
   background-color: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
@@ -212,29 +268,99 @@
   flex-direction: column;
   gap: 8px;
 }
-.resultsRow { display: flex; justify-content: space-between; font-size: 0.875rem; color: #475569; }
-.resultsValue { font-weight: 600; color: #1e293b; }
-
+.resultsRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: #475569;
+}
+.resultsValue {
+  font-weight: 600;
+  color: #1e293b;
+}
 
 /* --- Sample Library & Stage Controls --- */
-.stageControlArea { display: grid; grid-template-columns: 1fr; gap: 20px; }
-.sampleLibraryContainer { min-width: 0; }
-.stageControlsContainer { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
-.stageControlsGrid { display: flex; justify-content: center; align-items: center; width: 100%; margin: 12px 0 0; }
+.stageControlArea {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+.sampleLibraryContainer {
+  min-width: 0;
+}
+.stageControlsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+.stageControlsGrid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 12px 0 0;
+}
 .absoluteZeroButton {
-  background-color: #ef4444; color: white; width: 64px; height: 64px; border-radius: 50%; font-size: 0.875rem; font-weight: bold;
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); border-bottom: 4px solid #b91c1c; transition: all 0.15s; border-top: none; border-left: none; border-right: none; cursor: pointer;
+  background-color: #ef4444; /* red-500 */
+  color: white;
+  border: none;
+  border-radius: 6px; /* square with slight round */
+  padding: 10px 15px; /* Adjust padding as needed for a good size */
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+  width: 100%; /* Make it take full width of its grid cell */
+  height: 38px; /* Fixed height for consistency */
+  display: flex; /* Use flex to perfectly center content */
+  justify-content: center;
+  align-items: center;
 }
-.absoluteZeroButton:hover { background-color: #f87171; }
-.absoluteZeroButton:active { border-bottom: 2px solid #b91c1c; transform: translateY(2px); }
-.absoluteZeroButton:disabled { background-color: #fca5a5; border-bottom-color: #ef4444; cursor: not-allowed; transform: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-
-
+.absoluteZeroButton:hover {
+  background-color: #dc2626; /* red-600 */
+  transform: translateY(-1px);
+}
+.absoluteZeroButton:active {
+  background-color: #b91c1c; /* red-700 */
+  transform: translateY(0);
+}
+.absoluteZeroButton:disabled {
+  background-color: #4b5563; /* gray-600 */
+  color: #9ca3af; /* gray-400 */
+  cursor: not-allowed;
+  transform: none;
+  opacity: 0.7;
+}
 /* --- Restart Tutorial Button --- */
-.recalibrateContainer { padding-top: 16px; border-top: 1px solid #e2e8f0; }
-.recalibrateButton {
-  width: 100%; background-color: #e5e7eb; color: #4b5563; font-weight: 600; padding: 12px; border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); border-bottom: 4px solid #d1d5db; transition: all 0.15s; border-top: none; border-left: none; border-right: none; cursor: pointer;
+.recalibrateContainer {
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
 }
-.recalibrateButton:active { border-bottom: 2px solid #d1d5db; transform: translateY(2px); }
-.recalibrateButton:disabled { background-color: #f3f4f6; color: #9ca3af; cursor: not-allowed; border-bottom-color: #e5e7eb; transform: none; box-shadow: 0 1px 3px rgba(0,0,0,0.1);}
+.recalibrateButton {
+  width: 100%;
+  background-color: #e5e7eb;
+  color: #4b5563;
+  font-weight: 600;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-bottom: 4px solid #d1d5db;
+  transition: all 0.15s;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  cursor: pointer;
+}
+.recalibrateButton:active {
+  border-bottom: 2px solid #d1d5db;
+  transform: translateY(2px);
+}
+.recalibrateButton:disabled {
+  background-color: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+  border-bottom-color: #e5e7eb;
+  transform: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}

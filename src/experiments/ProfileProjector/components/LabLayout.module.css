@@ -6,35 +6,60 @@
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background-color: #f1f5f9; /* Light Gray/Slate */
+  background-color: #f1f5f9; /* Light Gray/Slate (Theme: Grey) */
 }
 
+/* --- Header Styles (MODIFIED TO MATCH MAIN PAGE) --- */
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Keeps title left, button right */
   align-items: center;
-  /* Reduced padding */
-  padding: 8px 24px;
-  background-color:#1f2937;; /* Dark Slate */
+  /* Darker gradient */
+  background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
   color: white;
-  z-index: 10;
+  padding: 24px 30px; /* Made taller */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); /* Deeper shadow */
   flex-shrink: 0;
+  z-index: 20;
+  border-radius: 0 0 16px 16px; /* Rounded bottom corners */
+  /* text-align: center; Removed - use justify-content instead */
 }
 
+/* --- NEW: Styles for the H1 inside this specific header --- */
+.header h1 {
+  margin: 0;
+  font-size: 2rem; /* Increased size */
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  /* Make sure title doesn't push button too far */
+  flex-grow: 1;
+  text-align: left; /* Explicitly align title left */
+}
+
+
+/* --- Button styles adjusted slightly to match main page's header button --- */
 .header button {
-  padding: 6px 14px;
-  background-color: #f97316; /* Orange */
+  padding: 8px 16px; /* Slightly larger padding */
+  background-color: #ffffff; /* White button */
   border-radius: 6px;
   font-weight: 600;
-  color: white;
-  transition: background-color 0.2s;
+  color: #2563eb; /* Blue text */
+  transition: all 0.2s ease-in-out;
   cursor: pointer;
   border: none;
+  transform: translateY(0);
+  flex-shrink: 0; /* Prevent button from shrinking */
+  margin-left: 20px; /* Add space between title and button */
 }
 
 .header button:hover {
-  background-color: #ea580c; /* Darker Orange */
+  background-color: #f1f5f9; /* Light grey hover */
+  transform: translateY(-2px); /* Interactive hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #1d4ed8; /* Darker blue text on hover */
 }
+
+/* --- Remaining styles are unchanged --- */
 
 .mainContent {
   flex-grow: 1;
@@ -47,12 +72,12 @@
   flex-shrink: 0;
   width: 100%;
   overflow: hidden;
-  padding: 15px 25px;
-  background-color: #fef3c7;
-  color: #92400e;
-  border-bottom: 3px solid #f59e0b;
-  font-size: 1.1rem;
-  font-weight: 700;
+  padding: 20px 30px;
+  background-color: #e0f2fe;
+  color: #0c5460;
+  border-bottom: 3px solid #0ea5e9;
+  font-size: 1.2rem;
+  font-weight: 600;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
@@ -69,16 +94,15 @@
   background-color: #ffffff;
   padding: 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  overflow-y: auto; /* Keep this for scrolling inside the sidebar */
+  overflow-y: auto;
   flex-shrink: 0;
   border-right: 1px solid #e2e8f0;
-  /* Removed display: flex and flex-direction: column as scrolling is handled by overflow-y */
 }
 
 .tutorialSidebar h3 {
   font-size: 1.25rem;
   font-weight: bold;
-  color: #1e2b3b; /* Corrected color code */
+  color: #1e2b3b;
   margin-bottom: 15px;
 }
 .tutorialSidebar ol {
@@ -90,6 +114,15 @@
 .tutorialSidebar li {
   margin-bottom: 10px;
   color: #475569;
+  transition: all 0.2s ease-out;
+  padding-left: 4px;
+  border-left: 2px solid transparent;
+}
+
+.tutorialSidebar li:hover {
+  color: #2563eb;
+  transform: translateX(5px);
+  border-left-color: #3b82f6;
 }
 
 /* Lab Content Area (Screen + Controls) */
@@ -97,15 +130,13 @@
   flex-grow: 1;
   padding: 20px;
   display: grid;
-  /* **FIX: Increased projector area ratio** */
-  /* Was 2.5fr 1fr */
-  grid-template-columns: 3fr 1fr; /* Projector gets 3 parts, Controls get 1 */
+  grid-template-columns: 3fr 1fr;
   gap: 20px;
   overflow: hidden;
 }
 
 .projectorArea {
-  min-height: 0; /* Important for grid item sizing */
+  min-height: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -113,6 +144,6 @@
 }
 
 .controlPanelArea {
-  min-height: 0; /* Important for grid item sizing */
-  overflow: hidden; /* Control panel itself should handle internal scrolling */
+  min-height: 0;
+  overflow: hidden;
 }

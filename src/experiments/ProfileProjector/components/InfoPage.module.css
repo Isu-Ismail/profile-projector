@@ -1,48 +1,68 @@
 /* Styles for Aim, Theory, Procedure, Test pages */
 
 .infoPageContainer {
-  padding: 3rem;
+  padding: 2.5rem 3rem;
   max-width: 1000px;
   margin: 0 auto;
   background-color: #ffffff;
-  min-height: calc(100vh - 80px); /* Adjust for header/footer */
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  min-height: calc(100vh - 80px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+  border-radius: 16px;
 }
 
 .infoPageContainer h1 {
-  font-size: 2.25rem;
-  font-weight: 700;
-  color: #1f2937; /* slate-800 equivalent */
-  margin-bottom: 1.5rem;
-  border-bottom: 3px solid #f97316; /* orange-600 equivalent */
-  padding-bottom: 0.5rem;
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: #1f2937;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #d1d5db;
+  padding-bottom: 1rem;
+  text-align: center;
 }
 
 .infoPageContainer h2 {
   font-size: 1.5rem;
-  font-weight: 600;
-  color: #374151; /* slate-700 equivalent */
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-top: 2.5rem;
+  margin-bottom: 1.25rem;
+  border-left: 4px solid #3b82f6;
+  padding-left: 1rem;
 }
 
 .infoPageContainer p {
   font-size: 1.1rem;
   line-height: 1.75;
-  color: #4b5563; /* slate-600 equivalent */
+  color: #374151;
   margin-bottom: 1.25rem;
 }
 
 .infoPageContainer ul {
-  list-style-type: disc;
-  margin-left: 2rem;
+  list-style-type: none;
+  margin-left: 0.5rem;
   padding-left: 0;
-  color: #4b5563;
+  color: #374151;
 }
 
+/* This rule now ONLY applies to general <li> tags */
 .infoPageContainer li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
   font-size: 1rem;
+  position: relative;
+  padding-left: 1.75rem;
+  line-height: 1.6;
+}
+
+/* This rule now ONLY applies to general <li> tags */
+.infoPageContainer li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #3b82f6; /* Theme blue */
+  font-size: 1.5rem; /* Larger bullet */
+  font-weight: 700;
+  line-height: 1.6; /* Align with text */
 }
 
 /* --- Styles for MCQ --- */
@@ -66,41 +86,71 @@
 .optionsList {
   list-style: none;
   margin-left: 0;
-  padding-left: 1rem;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-.optionItem {
-  margin-bottom: 0.75rem;
+/* MODIFIED: Increased specificity by adding .infoPageContainer */
+.infoPageContainer .optionItem {
   font-size: 1rem;
   color: #4b5563;
-  transition: opacity 0.3s; /* For dimming effect */
+  transition: all 0.2s ease-in-out;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem; /* This now correctly overrides padding-left */
+  background-color: #ffffff;
+  position: static; /* This overrides 'position: relative' */
+  margin-bottom: 0; /* Override generic li margin */
+  line-height: 1.5; /* Reset line-height */
 }
 
-.optionItem label {
+/* MODIFIED: Added this rule to explicitly remove the bullet */
+.infoPageContainer .optionItem::before {
+  content: none;
+}
+
+.infoPageContainer .optionItem label {
   display: flex;
   align-items: center;
   cursor: pointer;
+}
+
+.infoPageContainer
+  .optionItem:not(.dimmed):not(:has(input[type="radio"]:disabled)):hover {
+  border-color: #3b82f6; /* Blue border on hover */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+  transform: translateY(-2px); /* Slight lift */
 }
 
 .radioInput {
   margin-right: 0.75rem;
   width: 1rem;
   height: 1rem;
-  accent-color: #f97316;
+  accent-color: #3b82f6;
 }
 
 /* --- NEW: Feedback Styles --- */
-.optionItem.correct label {
-  color: #16a34a; /* Green */
+.infoPageContainer .optionItem.correct {
+  border-color: #16a34a; /* Green */
+  background-color: #f0fdf4; /* Light green */
+}
+.infoPageContainer .optionItem.correct label {
+  color: #15803d; /* Dark Green */
   font-weight: 600;
 }
 
-.optionItem.incorrect label {
-  color: #dc2626; /* Red */
+.infoPageContainer .optionItem.incorrect {
+  border-color: #dc2626; /* Red */
+  background-color: #fef2f2; /* Light red */
+}
+.infoPageContainer .optionItem.incorrect label {
+  color: #b91c1c; /* Dark Red */
   font-weight: 600; /* Bold the selected wrong answer */
 }
 
-.optionItem.dimmed {
+.infoPageContainer .optionItem.dimmed {
   opacity: 0.6; /* Dim unselected/incorrect options */
 }
 
@@ -109,11 +159,11 @@
   font-weight: bold;
 }
 
-.optionItem.correct .feedbackMark {
+.infoPageContainer .optionItem.correct .feedbackMark {
   color: #16a34a; /* Green */
 }
 
-.optionItem.incorrect .feedbackMark {
+.infoPageContainer .optionItem.incorrect .feedbackMark {
   color: #dc2626; /* Red */
 }
 
@@ -121,27 +171,29 @@
 input[type="radio"]:disabled {
   cursor: not-allowed;
 }
-.optionItem label:has(input[type="radio"]:disabled) { /* Target label when radio inside is disabled */
-   cursor: default;
+.infoPageContainer .optionItem label:has(input[type="radio"]:disabled) {
+  /* Target label when radio inside is disabled */
+  cursor: default;
 }
-
 
 /* --- Submit Button Style --- */
 .submitButton {
   margin-top: 2rem;
   padding: 10px 20px;
-  background-color: #f97316;
+  background-color: #3b82f6;
   color: white;
   border: none;
   border-radius: 6px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 
 .submitButton:hover {
-  background-color: #ea580c;
+  background-color: #2563eb;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); /* Blue glow */
+  transform: translateY(-2px); /* Slight lift */
 }
 
 /* --- Score Display Style --- */
@@ -159,5 +211,3 @@ input[type="radio"]:disabled {
   color: #1d4ed8; /* Darker blue */
   font-size: 1.5rem;
 }
-
-/* ----------------------------- */

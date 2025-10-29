@@ -289,12 +289,26 @@ export const pageContent = {
        { type: 'mcq', questions: posttestQuestions }
     ]
   },
-  References: {
-    title: "Suggested Reading",
+  Acknowledgement: {
+    title: "Acknowledgement", // Main Title
     sections: [
       {
         type: "paragraph",
-        text: "Textbook references for further study on metrology and measuring instruments.",
+        text: "This virtual lab was developed by the following team members.", // Subtitle
+      },
+      {
+        type: "heading", // Using a heading type (you might need to add styling for this)
+        level: 2, // e.g., an <h2> heading
+        text: "Contributions",
+      },
+      {
+        type: "list",
+        items: [
+          "A. M. ISMAIL - 2023507030 - MIT (PT)", // Replace with actual names/numbers
+          "V. B. JAYARAM - 2023507040 - MIT (PT)",
+          "M. RAM BHARATH - 2023507039 - MIT (PT)",
+          "R. MONISH KUMAR - 2023507038 - MIT (PT)",
+        ],
       },
     ],
   },
@@ -307,5 +321,5 @@ export const topicMap = {
   Procedure: "Procedure",
   Test1: "Pretest",
   Test2: "Posttest",
-  References: "References",
+  Acknowledgement: "Acknowledgement",
 };

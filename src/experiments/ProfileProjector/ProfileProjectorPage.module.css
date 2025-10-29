@@ -1,75 +1,87 @@
 /* Styles for the Profile Projector Main Page (Header, Sidebar, Layout) */
 
 .mainWrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: #f1f5f9; /* Base background */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f1f5f9; /* Base background */
 }
 
 /* --- Header Styles --- */
 .header {
-    background-color: #0f172a; /* Dark Blue/Slate */
-    color: white;
-    padding: 15px 30px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    flex-shrink: 0;
+  /* MODIFIED: Darker gradient */
+  background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+  padding: 24px 30px; /* MODIFIED: Made taller */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); /* MODIFIED: Deeper shadow */
+  flex-shrink: 0;
+  z-index: 20; /* Ensure header is above sidebar shadow */
+  border-radius: 0 0 16px 16px; /* MODIFIED: Rounded bottom corners */
+  text-align: center; /* MODIFIED: Centered text */
 }
 
 .headerTitle {
-    margin: 0;
-    font-size: 1.8rem;
-    font-weight: 700;
+  margin: 0;
+  font-size: 2rem; /* MODIFIED: Increased size */
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 /* --- Content Layout (Sidebar + Main Content) --- */
 .contentArea {
-    display: flex;
-    flex-grow: 1;
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden; /* MODIFIED: Prevent layout breaks */
 }
 
 .sidebar {
-    width: 220px;
-    background-color: #ffffff;
-    border-right: 1px solid #e2e8f0;
-    padding: 20px 0;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
-    flex-shrink: 0;
+  width: 240px;
+  background-color: #ffffff; /* MODIFIED: Professional white background */
+  border-right: 1px solid #e2e8f0; /* MODIFIED: Added border for separation */
+  padding: 20px 10px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05); /* MODIFIED: Softened shadow */
+  flex-shrink: 0;
+  z-index: 10;
 }
 
 .navList {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .navButton {
-    width: 100%;
-    text-align: left;
-    padding: 10px 30px;
-    font-size: 1rem;
-    font-weight: 600;
-    border: none;
-    background-color: transparent;
-    color: #475569; /* Slate-600 */
-    transition: background-color 0.2s, color 0.2s;
-    cursor: pointer;
+  width: calc(100% - 20px);
+  text-align: left;
+  padding: 12px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  background-color: transparent;
+  color: #475569; /* MODIFIED: Dark text for light bg */
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  border-radius: 8px;
+  margin: 4px 10px;
 }
 
 .navButton:hover {
-    background-color: #e2e8f0; /* Slate-200 */
+  background-color: #f1f5f9; /* MODIFIED: Light grey hover */
+  color: #1e293b; /* MODIFIED: Dark text on hover */
+  transform: translateX(5px); /* MODIFIED: Add interaction */
 }
 
 .navButton.active {
-    background-color: #ffedd5; /* Orange-100 */
-    color: #f97316; /* Orange-600 */
-    /* Add a visual indicator for the active page */
-    border-left: 4px solid #f97316;
-    padding-left: 26px; /* Adjust padding due to border */
+  background-color: #3b82f6; /* Theme blue background (Unchanged) */
+  color: #ffffff; /* White text (Unchanged) */
+  border-left: none;
+  padding-left: 20px;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); /* Blue glow (Unchanged) */
+  transform: translateX(5px);
 }
 
 .mainContent {
-    flex-grow: 1;
-    padding: 0; /* InfoPageLayout will handle padding inside */
-    overflow-y: auto;
+  flex-grow: 1;
+  padding: 24px;
+  overflow-y: auto;
 }
