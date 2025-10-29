@@ -10,6 +10,7 @@ import LabTutorial from "./LabTutorial";
 import { TUTORIAL_SCRIPTS } from "./data/TutorialsData";
 import HighlightOverlay from "./components/HighlightOverlay";
 import styles from "./components/LabLayout.module.css";
+import warningStyles from "./components/MobileWarning.module.css";
 
 const VIRTUAL_CALIBRATION_LENGTH_PIXELS = 400;
 const REAL_CALIBRATION_LENGTH_MM = 100;
@@ -32,9 +33,13 @@ const ANGLE_TARGETS = {
 // **REMOVED HARDCODED_SAMPLES definition from here**
 
 function ProfileProjectorLabPage() {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Get the navigate function
   const { experimentId } = useParams();
 
+  // --- NEW: State to track if the device is mobile ---
+  const [isMobile, setIsMobile] = useState(
+    window.innerWidth <= 768 // Initial check
+  );
   // --- Core State ---
   const [pointPosition, setPointPosition] = useState({ x: 0, y: 0 });
   const [zeroOffset, setZeroOffset] = useState({ x: 0, y: 0 });
@@ -326,6 +331,20 @@ function ProfileProjectorLabPage() {
 
   // --- Lifecycle Effects ---
 
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", checkScreenSize);
+
+    // Initial check in case the component mounts after initial load
+    checkScreenSize();
+
+    // Cleanup listener on component unmount
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
   // Effect to calculate OD measurement
   useEffect(() => {
     // Skip if in angle mode
@@ -508,6 +527,25 @@ function ProfileProjectorLabPage() {
   useEffect(() => {
     mainContainerRef.current?.focus();
   }, []);
+
+  if (isMobile) {
+    return (
+      <div className={warningStyles.mobileWarningContainer}>
+        <h1>Desktop Recommended</h1>
+        <p>
+          This virtual lab requires a larger screen. Please switch to a computer
+          for the best experience.
+        </p>
+        <p>📱➡️💻</p>
+        <button
+          className={warningStyles.backButton}
+          onClick={() => navigate("/experiments/profile-projector/Aim")} // Navigate back
+        >
+          ← Back to Experiment Info
+        </button>
+      </div>
+    );
+  }
 
   // --- Render ---
   return (

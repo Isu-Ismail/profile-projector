@@ -5,7 +5,7 @@
 
 :root {
   /* Define basic colors for the theme */
-  --color-primary: #3b82f6; /* MODIFIED: Using Blue as primary now */
+  --color-primary: #f97316; /* Orange */
   --color-secondary: #334155; /* Dark Slate */
   --color-background: #f1f5f9; /* Light Gray/Slate */
   --color-text-dark: #1e293b;
@@ -47,52 +47,4 @@ button {
 a {
   text-decoration: none;
   color: inherit;
-}
-
-
-/* --- Mobile Warning Styles --- */
-/* --- Mobile Warning Styles --- */
-
-#mobile-warning {
-  /* MODIFIED: REMOVED display: flex from here */
-  display: none; /* Hidden by default on desktop */
-  position: fixed;
-  inset: 0; /* Cover the whole screen */
-  background-color: var(--color-background); /* Match your app's background */
-  color: var(--color-text-dark);
-  z-index: 9999; /* Make sure it's on top */
-  
-  /* Styling for centered content (applied only when display:flex is active) */
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 30px;
-  font-family: sans-serif; /* Basic font */
-}
-
-#mobile-warning h1 {
-  color: var(--color-primary); /* Use theme blue */
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-#mobile-warning p {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  max-width: 400px; /* Limit text width */
-  margin-bottom: 1.5rem;
-}
-
-/* --- Media Query for Mobile --- */
-
-/* This targets screens 768px wide or smaller */
-@media (max-width: 768px) {
-  #root {
-    display: none; /* Hide the entire React app */
-  }
-
-  #mobile-warning {
-    display: flex; /* MODIFIED: Show the warning message AND apply flex centering */
-  }
 }
