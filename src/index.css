@@ -1,58 +1,7 @@
-/*
-  This file contains global styles and resets, as we are using
-  separate CSS Modules (e.g., LabLayout.module.css) for components.
-*/
-
-:root {
-  /* Define basic colors for the theme */
-  --color-primary: #3b82f6; /* MODIFIED: Using Blue as primary now */
-  --color-secondary: #334155; /* Dark Slate */
-  --color-background: #f1f5f9; /* Light Gray/Slate */
-  --color-text-dark: #1e293b;
-  --color-text-light: #ffffff;
-}
-
-/* Global reset for full-screen lab and basic typography */
-html, body, #root {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  color: var(--color-text-dark);
-  box-sizing: border-box;
-}
-
-*, *::before, *::after {
-  box-sizing: inherit;
-}
-
-body {
-  background-color: var(--color-background);
-  overflow-y: auto; /* Default for non-lab pages */
-}
-
-/* Specific body style for the full-screen lab page to disable scrolling */
-body.lab-mode {
-  overflow: hidden;
-}
-
-/* Base button style (can be overridden by component CSS modules) */
-button {
-  cursor: pointer;
-  border: none;
-  transition: background-color 0.2s, color 0.2s;
-}
-
-/* Remove default link styling */
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-
 /* --- Mobile Warning Styles --- */
 
 #mobile-warning {
+  /* MODIFIED: REMOVED display: flex from here */
   display: none; /* Hidden by default on desktop */
   position: fixed;
   inset: 0; /* Cover the whole screen */
@@ -60,8 +9,7 @@ a {
   color: var(--color-text-dark);
   z-index: 9999; /* Make sure it's on top */
   
-  /* Center the content */
-  display: flex;
+  /* Styling for centered content (applied only when display:flex is active) */
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -92,6 +40,6 @@ a {
   }
 
   #mobile-warning {
-    display: flex; /* Show the warning message */
+    display: flex; /* MODIFIED: Show the warning message AND apply flex centering */
   }
 }
