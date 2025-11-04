@@ -122,6 +122,14 @@ function ProfileProjectorPage() {
           <InfoPageLayout pageKey={contentKey} content={pageContent} />
         </div>
       </div>
+      <footer className={styles.footer}>
+        <p>
+          Developed and coordinated by: Dr. S.Vijayakumar, Dr.S.Sathish
+          Department of Production Technology, MIT Campus, Anna University,
+          Chennai.
+        </p>
+        {/* You can add more footer content here */}
+      </footer>
     </div>
   );
 }

@@ -294,7 +294,7 @@ export const pageContent = {
     sections: [
       {
         type: "paragraph",
-        text: "This virtual lab was developed by the following team members.", // Subtitle
+        text: "The Department of Production Technology appreciates the following students for their support in the development of Metrology and measurements virtual laboratory experiment.", // Subtitle
       },
       {
         type: "heading", // Using a heading type (you might need to add styling for this)
@@ -304,10 +304,10 @@ export const pageContent = {
       {
         type: "list",
         items: [
-          "A. M. ISMAIL - 2023507030 - MIT (PT)", // Replace with actual names/numbers
-          "V. B. JAYARAM - 2023507040 - MIT (PT)",
-          "M. RAM BHARATH - 2023507039 - MIT (PT)",
-          "R. MONISH KUMAR - 2023507038 - MIT (PT)",
+          "A. M. ISMAIL - 2023507030 ", // Replace with actual names/numbers
+          "V. B. JAYARAM - 2023507040 ",
+          "M. RAM BHARATH - 2023507039 ",
+          "R. MONISH KUMAR - 2023507038 ",
         ],
       },
     ],

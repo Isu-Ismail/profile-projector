@@ -163,3 +163,18 @@
     min-height: calc(100vh - 70px); /* Adjust 70px based on header height */
   }
 }
+
+
+.footer {
+  flex-shrink: 0;
+  padding: 15px 30px; /* Keep padding for spacing */
+  background-color: transparent; /* Removed background color */
+  color: #475569; /* Dark text for light background */
+  text-align: center;
+  font-size: 0.875rem;
+  /* Removed border and shadow */
+}
+
+.footer p {
+  margin: 0;
+}
